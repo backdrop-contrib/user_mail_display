@@ -4,7 +4,7 @@
 
 This is a lightweight module that exposes the user account's email field in the User's Manage Display settings UI (admin/config/people/manage/display). This allows site administrators to choose whether to show the account's email in the user's profile page. 
 
-NOTE: There is a reason why Backdrop doesn't expose this field. Account email is considered private information with security implications. Use at your own risk!
+NOTE: There is a reason why Backdrop doesn't expose this field. The account email is considered private information with security implications. Use at your own risk!
 
 ## Configuration
 
