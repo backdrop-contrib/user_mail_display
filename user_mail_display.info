@@ -1,0 +1,5 @@
+type = module
+name = User Email Display
+description = Exposes the user email to the user's Manage Fields UI
+backdrop = 1.x
+package = User interface

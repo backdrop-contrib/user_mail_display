@@ -1,0 +1,57 @@
+<?php
+
+/** 
+ * @file 
+ * Contains functions to expose the user's email field to the Manage Field UI.
+ */
+
+ /**
+  * Implements hook_field_extra_fields_alter().
+  */
+function user_mail_display_field_extra_fields_alter(&$info) {
+  $info['user']['user']['display']['mail'] = array(
+    'label' => t('Email address'),
+    'description' => t('User\'s email address.'),
+    'weight' => 6,
+  );
+}
+
+/**
+ * Implements hook_user_view_alter().
+ */
+function user_mail_display_user_view_alter(&$build) {
+  $account = $build['#account'];
+  $build['mail'] = array(
+    '#type' => 'item',
+    '#title' => t('Email:'),
+    '#markup' => check_plain($account->mail),
+    '#weight' => 6,
+  );
+}
+
+/** 
+ * Implements hook_enable().
+ * 
+ * Set the mail field visibility to false by default.
+ */
+function user_mail_display_enable() {
+  $bundle = 'user';
+  $entity_info = entity_get_info('user');
+  $settings = field_bundle_settings('user', $bundle);
+  $active_modes = array('default');
+  foreach ($settings['view_modes'] as $mode => $mode_settings) {
+    if ($mode_settings['custom_settings']) {
+      $active_modes[] = $mode;
+    }
+  }
+  foreach ($active_modes as $mode) {
+    if (empty($settings['extra_fields']['display']['mail'][$mode])
+      || !array_key_exists('visible', $settings['extra_fields']['display']['mail'][$mode])) {
+      $settings['extra_fields']['display']['mail'][$mode]['visible'] = FALSE;
+      $settings['extra_fields']['display']['mail'][$mode] += array(
+        'weight' => 0, 
+      );
+    }
+  }
+  field_bundle_settings('user', $bundle, $settings);
+}
